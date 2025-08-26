@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galerie - Exploration Multimédia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Copier le même CSS que index.html ici */
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #10b981;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 0.5em;
+            line-height: 1.2;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        #main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+
+        #main-nav.scrolled {
+            padding: 10px 0;
+        }
+
+        #main-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        #mobile-menu-btn {
+            display: none;
+            background: none;
+            font-size: 1.5rem;
+        }
+
+        .page-header {
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+            margin-top: 70px;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .gallery-section {
+            background-color: #f3f4f6;
+            padding: 80px 0;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .gallery-item {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .image-container {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover .image-container img {
+            transform: scale(1.1);
+        }
+
+        .gallery-content {
+            padding: 20px;
+        }
+
+        .gallery-content h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .gallery-btn {
+            background: none;
+            color: var(--primary);
+            font-weight: 600;
+            padding: 5px 0;
+            transition: var(--transition);
+        }
+
+        .gallery-btn:hover {
+            color: var(--primary-dark);
+        }
+
+        .load-more-btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: var(--transition);
+            display: block;
+            margin: 0 auto;
+        }
+
+        .load-more-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        footer {
+            background-color: #111827;
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-column p {
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: white;
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: var(--transition);
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            #mobile-menu-btn {
+                display: block;
+            }
+            
+            .page-header {
+                margin-top: 60px;
+                height: 50vh;
+            }
+            
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="main-nav">
+        <div class="container">
+            <div class="logo">Debora<span>Poesie</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="galerie.html" class="active">Galerie</a></li>
+                <li><a href="audio.html">Audio</a></li>
+                <li><a href="video.html">Vidéo</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button id="mobile-menu-btn">☰</button>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Galerie Interactive</h1>
+            <p>Découvrez notre collection d'images soigneusement sélectionnées qui capturent l'essence de notre projet.</p>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section">
+        <div class="container">
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="Paysage montagneux">
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Paysage Montagneux</h3>
+                        <button class="gallery-btn">Voir détails</button>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470" alt="Lac de montagne">
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Lac Serein</h3>
+                        <button class="gallery-btn">Voir détails</button>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05" alt="Forêt verdoyante">
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Forêt Verdoyante</h3>
+                        <button class="gallery-btn">Voir détails</button>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5" alt="Desert">
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Désert Infini</h3>
+                        <button class="gallery-btn">Voir détails</button>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1433086966358-54859d0ed716" alt="Cascade">
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Cascade Majestueuse</h3>
+                        <button class="gallery-btn">Voir détails</button>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1505142468610-359e7d316be0" alt="Aurore boréale">
+                    </div>
+                    <div class="gallery-content">
+                        <h3>Aurore Boréale</h3>
+                        <button class="gallery-btn">Voir détails</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button id="load-more" class="load-more-btn">Charger plus d'images</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>DeboraPoesie</h3>
+                    <p>Notre mission est de créer des expériences multimédias immersives qui inspirent et captivent notre audience.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Liens Rapides</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="galerie.html">Galerie</a></li>
+                        <li><a href="audio.html">Audio</a></li>
+                        <li><a href="video.html">Vidéo</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+               
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 Deboramultimedia - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation mobile
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+        });
+
+        // Navigation fixe au scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Fermer le menu mobile en cliquant sur un lien
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.textContent = '☰';
+            });
+        });
+
+        // Charger plus d'images
+        const loadMoreBtn = document.getElementById('load-more');
+        let currentItems = 6;
+        const totalItems = 12; // Simuler 12 éléments au total
+
+        loadMoreBtn.addEventListener('click', () => {
+            // Simuler le chargement de plus d'images
+            if (currentItems < totalItems) {
+                // En réalité, vous chargeriez les données depuis un serveur
+                setTimeout(() => {
+                    loadMoreBtn.textContent = 'Chargement...';
+                    setTimeout(() => {
+                        currentItems += 3;
+                        loadMoreBtn.textContent = 'Charger plus d\'images';
+                        
+                        if (currentItems >= totalItems) {
+                            loadMoreBtn.style.display = 'none';
+                        }
+                        
+                        alert('3 images supplémentaires ont été chargées (simulation).');
+                    }, 1000);
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html>

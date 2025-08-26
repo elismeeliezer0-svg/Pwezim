@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio - Exploration Multimédia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Copier le même CSS que index.html ici */
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #10b981;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 0.5em;
+            line-height: 1.2;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        #main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+
+        #main-nav.scrolled {
+            padding: 10px 0;
+        }
+
+        #main-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        #mobile-menu-btn {
+            display: none;
+            background: none;
+            font-size: 1.5rem;
+        }
+
+        .page-header {
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+            margin-top: 70px;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .audio-section {
+            background-color: #e0e7ff;
+            padding: 80px 0;
+        }
+
+        .audio-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .audio-player, .playlist {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .audio-player h3, .playlist h3 {
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .player-controls {
+            width: 100%;
+        }
+
+        audio {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .track-list {
+            list-style: none;
+        }
+
+        .track-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .track-item:last-child {
+            border-bottom: none;
+        }
+
+        .play-btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .play-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        footer {
+            background-color: #111827;
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-column p {
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: white;
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.8;
+        }
+
+        @media (max-width: 992px) {
+            .audio-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: var(--transition);
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            #mobile-menu-btn {
+                display: block;
+            }
+            
+            .page-header {
+                margin-top: 60px;
+                height: 50vh;
+            }
+            
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="main-nav">
+        <div class="container">
+            <div class="logo">Debora<span>Poesie</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="galerie.html">Galerie</a></li>
+                <li><a href="audio.html" class="active">Audio</a></li>
+                <li><a href="video.html">Vidéo</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button id="mobile-menu-btn">☰</button>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Expérience Audio</h1>
+            <p>Immergez-vous dans nos paysages sonores et découvrez notre playlist exclusive.</p>
+        </div>
+    </section>
+
+    <!-- Audio Section -->
+    <section class="audio-section">
+        <div class="container">
+            <div class="audio-content">
+                <div class="audio-player">
+                    <h3>Écouter notre verbe...</h3>
+                    <div class="player-controls">
+                        <audio id="audio-player" controls>
+                            <source src="Videos.Audio.Photos/Audio 00.mpeg" type="audio/mpeg">
+                            Votre navigateur ne supporte pas l'élément audio.
+                        </audio>
+                        <div class="now-playing">
+                            <p><strong>En cours:</strong> Pwezi 00</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="playlist">
+                    <h3>Playlist</h3>
+                        <div class="player-controls">
+                        <audio id="audio-player" controls>
+                            <source src="Videos.Audio.Photos/Audio 01.mpeg" type="audio/mpeg">
+                        </audio>
+                        <div class="now-playing">
+                            <p><strong>En cours:</strong> Pwezi 01</p>
+                        </div>
+
+                          <div class="player-controls">
+                        <audio id="audio-player" controls>
+                            <source src="Videos.Audio.Photos/Audio 02.mpeg" type="audio/mpeg">
+                        </audio>
+                        <div class="now-playing">
+                            <p><strong>En cours:</strong> Pwezi 02</p>
+                        </div>
+
+                          <div class="player-controls">
+                        <audio id="audio-player" controls>
+                            <source src="Videos.Audio.Photos/Audio 03.mpeg" type="audio/mpeg">
+                        </audio>
+                        <div class="now-playing">
+                            <p><strong>En cours:</strong> Pwezi 03</p>
+                        </div>
+
+                          <div class="player-controls">
+                        <audio id="audio-player" controls>
+                            <source src="Videos.Audio.Photos/Audio 04.mpeg" type="audio/mpeg">
+                        </audio>
+                        <div class="now-playing">
+                            <p><strong>En cours:</strong> Pwezi 04</p>
+                        </div>
+
+                          <div class="player-controls">
+                        <audio id="audio-player" controls>
+                            <source src="Videos.Audio.Photos/Audio 05.ogg" type="audio/mpeg">
+                        </audio>
+                        <div class="now-playing">
+                            <p><strong>En cours:</strong> Pwezi 05</p>
+                        </div>
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>DeboraPoesie</h3>
+                    <p>Notre mission est de créer des expériences multimédias immersives qui inspirent et captivent notre audience.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Liens Rapides</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="galerie.html">Galerie</a></li>
+                        <li><a href="audio.html">Audio</a></li>
+                        <li><a href="video.html">Vidéo</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                
+              
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 Deboramultimedia - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation mobile
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+        });
+
+        // Navigation fixe au scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Fermer le menu mobile en cliquant sur un lien
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.textContent = '☰';
+            });
+        });
+
+        // Contrôle du lecteur audio
+        const audioPlayer = document.getElementById('audio-player');
+        const playButtons = document.querySelectorAll('.play-btn');
+        const nowPlaying = document.querySelector('.now-playing p');
+
+        playButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const audioSource = button.getAttribute('data-src');
+                const trackName = button.parentElement.querySelector('span').textContent;
+                
+                audioPlayer.src = audioSource;
+                audioPlayer.play();
+                
+                // Mettre à jour l'interface utilisateur
+                nowPlaying.innerHTML = `<strong>En cours:</strong> ${trackName}`;
+                
+                document.querySelectorAll('.track-item').forEach(item => {
+                    item.style.backgroundColor = 'transparent';
+                });
+                button.parentElement.style.backgroundColor = 'rgba(79, 70, 229, 0.1)';
+            });
+        });
+    </script>
+</body>
+</html>
